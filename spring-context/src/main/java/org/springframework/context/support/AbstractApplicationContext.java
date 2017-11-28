@@ -563,32 +563,42 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
             try {
                 // Allows post-processing of the bean factory in context subclasses.
+                //为容器的某些子类指定特殊的BeanPost事件处理器
                 postProcessBeanFactory(beanFactory);
 
                 // Invoke factory processors registered as beans in the context.
                 //从spring配置文件中，获取实现 BeanFactoryPostProcessor 接口的bean，然后按不同的优先级顺序，依次执行BeanFactoryPostProcessor的
                 // postProcessBeanFactory 方法。
+                //调用所有注册的BeanFactoryPostProcessor的Bean
                 invokeBeanFactoryPostProcessors(beanFactory);
 
                 // Register bean processors that intercept bean creation.
+                //为BeanFactory注册BeanPost事件处理器.
+                //BeanPostProcessor是Bean后置处理器，用于监听容器触发的事件
                 registerBeanPostProcessors(beanFactory);
 
                 // Initialize message source for this context.
+                //初始化信息源，和国际化相关.
                 initMessageSource();
 
-                // Initialize event multicaster for this context.
+                // initApplicationEventMulticaster
+                // 方法是用于初始化上下文事件广播器的.整个Spring的广播器是观察者模式的经典应用场景之一
                 initApplicationEventMulticaster();
 
-                // Initialize other special beans in specific context subclasses.
+                // 一个模板方法，重写它的作用是添加特殊上下文刷新的工作，在特殊Bean的初始化时、初始化之前被调用。在Spring中，
+                //调用子类的某些特殊Bean初始化方法
+                // AbstractRefreshableWebApplicationContext
+                // 、GenericWebApplicationContext、StaticWebApplicationContext都实现了这个方法
                 onRefresh();
 
-                // Check for listener beans and register them.
+                // registerListeners方法顾名思义，用于注册监听器：
                 registerListeners();
 
                 // Instantiate all remaining (non-lazy-init) singletons.
+                // 初始化所有剩余的单态Bean.
                 finishBeanFactoryInitialization(beanFactory);
 
-                // Last step: publish corresponding event.
+                // //初始化容器的生命周期事件处理器，并发布容器的生命周期事件
                 finishRefresh();
             } catch (BeansException ex) {
                 if (logger.isWarnEnabled()) {
@@ -829,7 +839,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
             beanFactory.registerSingleton(LIFECYCLE_PROCESSOR_BEAN_NAME, this.lifecycleProcessor);
             if (logger.isDebugEnabled()) {
                 logger.debug("Unable to locate LifecycleProcessor with name '" + LIFECYCLE_PROCESSOR_BEAN_NAME + "': " +
-                        "" + "" + "using default [" + this.lifecycleProcessor + "]");
+                        "" + "" + "" + "" + "using default [" + this.lifecycleProcessor + "]");
             }
         }
     }
@@ -898,7 +908,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         }
 
         // Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
-        String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
+        String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false,
+                false);
         for (String weaverAwareName : weaverAwareNames) {
             getBean(weaverAwareName);
         }

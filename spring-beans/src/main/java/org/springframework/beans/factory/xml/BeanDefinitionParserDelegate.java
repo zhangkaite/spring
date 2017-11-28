@@ -1342,6 +1342,11 @@ public class BeanDefinitionParserDelegate {
 		return TRUE_VALUE.equals(value);
 	}
 
+    /**
+     * 解析自定义的标签
+     * @param ele
+     * @return
+     */
 	public BeanDefinition parseCustomElement(Element ele) {
 		return parseCustomElement(ele, null);
 	}

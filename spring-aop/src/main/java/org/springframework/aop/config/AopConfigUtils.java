@@ -105,6 +105,13 @@ public abstract class AopConfigUtils {
 	}
 
 
+    /***
+     *
+     * @param cls
+     * @param registry
+     * @param source
+     * @return
+     */
 	private static BeanDefinition registerOrEscalateApcAsRequired(Class<?> cls, BeanDefinitionRegistry registry, Object source) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
@@ -120,8 +127,8 @@ public abstract class AopConfigUtils {
 		}
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(cls);
 		beanDefinition.setSource(source);
-		beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);
-		beanDefinition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+        beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);
+        beanDefinition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 		registry.registerBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME, beanDefinition);
 		return beanDefinition;
 	}

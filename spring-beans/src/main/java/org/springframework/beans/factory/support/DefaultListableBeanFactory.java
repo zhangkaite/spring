@@ -813,8 +813,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
             try {
                 ((AbstractBeanDefinition) beanDefinition).validate();
             } catch (BeanDefinitionValidationException ex) {
-                throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName, "Validation" +
-                        " of bean definition failed", ex);
+                throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
+                        "Validation" + " of bean definition failed", ex);
             }
         }
 
@@ -1394,8 +1394,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
             if (candidatePriority != null) {
                 if (highestPriorityBeanName != null) {
                     if (candidatePriority.equals(highestPriority)) {
-                        throw new NoUniqueBeanDefinitionException(requiredType, candidates.size(), "Multiple beans " +
-                                "found with the same priority ('" + highestPriority + "') among candidates: " +
+                        throw new NoUniqueBeanDefinitionException(requiredType, candidates.size(), "Multiple beans "
+                                + "found with the same priority ('" + highestPriority + "') among candidates: " +
                                 candidates.keySet());
                     } else if (candidatePriority < highestPriority) {
                         highestPriorityBeanName = candidateBeanName;
@@ -1477,9 +1477,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
         checkBeanNotOfRequiredType(type, descriptor);
 
-        throw new NoSuchBeanDefinitionException(resolvableType, "expected at least 1 bean which qualifies as autowire" +
-                " candidate. " + "Dependency annotations: " + ObjectUtils.nullSafeToString(descriptor.getAnnotations
-                ()));
+        throw new NoSuchBeanDefinitionException(resolvableType, "expected at least 1 bean which qualifies as " +
+                "autowire" + " candidate. " + "Dependency annotations: " + ObjectUtils.nullSafeToString(descriptor
+                .getAnnotations()));
     }
 
     /**
@@ -1510,7 +1510,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     /**
      * Create an {@link Optional} wrapper for the specified dependency.
      */
-    private Optional<?> createOptionalDependency(DependencyDescriptor descriptor, String beanName, final Object... args) {
+    private Optional<?> createOptionalDependency(DependencyDescriptor descriptor, String beanName, final Object...
+            args) {
         DependencyDescriptor descriptorToUse = new NestedDependencyDescriptor(descriptor) {
             @Override
             public boolean isRequired() {
@@ -1519,7 +1520,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
             @Override
             public Object resolveCandidate(String beanName, Class<?> requiredType, BeanFactory beanFactory) {
-                return (!ObjectUtils.isEmpty(args) ? beanFactory.getBean(beanName, requiredType, args) : super.resolveCandidate(beanName, requiredType, beanFactory));
+                return (!ObjectUtils.isEmpty(args) ? beanFactory.getBean(beanName, requiredType, args) : super
+                        .resolveCandidate(beanName, requiredType, beanFactory));
             }
         };
         return Optional.ofNullable(doResolveDependency(descriptorToUse, beanName, null, null));
@@ -1547,7 +1549,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     //---------------------------------------------------------------------
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        throw new NotSerializableException("DefaultListableBeanFactory itself is not deserializable - " + "just a SerializedBeanFactoryReference is");
+        throw new NotSerializableException("DefaultListableBeanFactory itself is not deserializable - " + "just a " +
+                "SerializedBeanFactoryReference is");
     }
 
     protected Object writeReplace() throws ObjectStreamException {
